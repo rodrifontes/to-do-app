@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 
-export const Overlay = styled.View`
+export const Overlay = styled.KeyboardAvoidingView`
   background: rgba(0, 0, 0, 0.6);
   flex: 1;
   align-items: center;

@@ -11,3 +11,20 @@ export const Container = styled.SafeAreaView`
 export const TasksContainer = styled.View`
   flex: 1;
 `;
+
+export const TaskEmptyContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  margin-top: 64px; 
+`;
+
+export const TaskEmptyImage = styled.Image`
+  width: 150px;
+  height: 150px;
+`;
+
+export const CenteredContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+`;

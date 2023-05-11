@@ -8,7 +8,7 @@ import done from '../../assets/images/done.png';
 import excluir from '../../assets/images/delete.png';
 import edit from '../../assets/images/edit.png';
 
-export default function Tasks({ tasks, onDelete }) {
+export default function Tasks({ tasks, onDelete, onEditTask }) {
   return (
     <FlatList
       data={tasks}
@@ -32,7 +32,7 @@ export default function Tasks({ tasks, onDelete }) {
             </TaskStatus>
             <TaskAction>
               <TouchableOpacity
-                onPress={() => alert("Abrir Modal de Edição")}
+                onPress={() => onEditTask(task)}
               >
                 <TaskIcon source={edit} />
               </TouchableOpacity>

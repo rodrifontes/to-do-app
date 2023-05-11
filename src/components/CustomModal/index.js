@@ -11,7 +11,7 @@ export default function CustomModal({ visible, onClose, children }) {
       animationType="fade"
       onRequestClose={onClose}
     >
-      <Overlay>
+      <Overlay behavior="padding">
         <ModalBody>
           {children}
         </ModalBody>
