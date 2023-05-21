@@ -12,7 +12,7 @@ export default function Tasks({ tasks, onDelete, onEditTask }) {
   return (
     <FlatList
       data={tasks}
-      keyExtractor={task => task._id}
+      keyExtractor={task => task.id}
       renderItem={({ item: task }) => (
         <Task>
           <TaskHeader>

@@ -1,12 +1,14 @@
+import { api } from '../utils/api';
+
 import { CenteredContainer, Container, TaskEmptyContainer, TaskEmptyImage, TasksContainer } from './styles';
 
 import Header from '../components/Header';
 import Tasks from '../components/Tasks';
 import AddButton from '../components/AddButton';
 
-import { tasks } from '../mocks/tasks';
+import { tasks as mock } from '../mocks/tasks';
 import DeleteConfirmModal from '../components/DeleteConfirmModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NewTaskModal from '../components/NewTaskModal';
 import EditTaskModal from '../components/EditTaskModal';
 
@@ -20,20 +22,51 @@ export default function Main() {
   const [isNewTaskModalVisible, setIsNewTaskModalVisible] = useState(false);
   const [isEditTaskModalVisible, setIsEditTaskModalVisible] = useState(false);
   const [taskBeingEdit, setTaskBeingEdit] = useState(null);
-  const [tasks, setTaks] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [taskBeingDeleted, setTaskBeingDeleted] = useState(null);
+  const [tasks, setTasks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    api.get('/tasks').then((response) => {
+      setTasks(response.data);
+      setIsLoading(false);
+    });
+  }, []);
 
   function handleDeleteTask(task) {
+    setTaskBeingDeleted(task);
     setIsDeleteModalVisible(true);
   }
 
-  function handleConfirmDeleteTask() {
+  async function handleConfirmDeleteTask() {
+    await api.delete(`/tasks/${taskBeingDeleted.id}`);
+
+    setTasks(prevState => prevState.filter(
+      (task) => task.id !== taskBeingDeleted.id
+    ))
+
     setIsDeleteModalVisible(false);
   }
 
   function handleEditTask(task) {
     setIsEditTaskModalVisible(true);
     setTaskBeingEdit(task);
+  }
+
+  async function handleCreateTask(task) {
+    //Cadastro Tarefa
+    const taskAdd = (await api.post('/tasks', task)).data;
+
+    //Fecho Modal
+    setIsNewTaskModalVisible(false);
+
+    //Crio uma copia do array de tarefas
+    const newTasks = tasks;
+    //Adiciono a tarefa criada no inicio do array
+    newTasks.unshift(taskAdd);
+
+    //Atualizo o estado com as tarefas
+    setTasks(newTasks);
   }
 
   return (
@@ -84,7 +117,7 @@ export default function Main() {
       <NewTaskModal
         visible={isNewTaskModalVisible}
         onClose={() => setIsNewTaskModalVisible(false)}
-        onSave={() => alert('Salvar')}
+        onSave={handleCreateTask}
       />
 
       <EditTaskModal
