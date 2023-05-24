@@ -8,7 +8,7 @@ import done from '../../assets/images/done.png';
 import excluir from '../../assets/images/delete.png';
 import edit from '../../assets/images/edit.png';
 
-export default function Tasks({ tasks, onDelete, onEditTask }) {
+export default function Tasks({ tasks, onDelete, onEditTask, onChangeStatus }) {
   return (
     <FlatList
       data={tasks}
@@ -24,7 +24,7 @@ export default function Tasks({ tasks, onDelete, onEditTask }) {
           </TaskDescription>
 
           <TaskFooter>
-            <TaskStatus>
+            <TaskStatus onPress={() => onChangeStatus(task)}>
               <TaskIcon source={task.done ? done : pending} />
               <Text color={task.done ? '#2192D8' : '#E620AE'}>
                 {task.done ? 'Feita' : 'Pendente'}

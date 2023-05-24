@@ -69,6 +69,38 @@ export default function Main() {
     setTasks(newTasks);
   }
 
+  async function handleChangeStatus(task) {
+    const taskChange = (await api.put(`/tasks/status/${task.id}`)).data;
+
+    setTasks((prevState) => {
+      const itemIdex = prevState.findIndex(
+        taskItem => taskItem.id === task.id
+      );
+
+      const newTasks = [...prevState];
+      newTasks[itemIdex] = taskChange;
+
+      return newTasks;
+    });
+  }
+
+  async function handleSaveEdit(task) {
+    const taskChange = (await api.put(`/tasks/${taskBeingEdit.id}`, task)).data;
+
+    setTasks((prevState) => {
+      const itemIdex = prevState.findIndex(
+        taskItem => taskItem.id === taskBeingEdit.id
+      );
+
+      const newTasks = [...prevState];
+      newTasks[itemIdex] = taskChange;
+
+      return newTasks;
+    });
+
+    setIsEditTaskModalVisible(false);
+  }
+
   return (
     <Container>
       <Header />
@@ -80,6 +112,7 @@ export default function Main() {
               onDelete={handleDeleteTask}
               onEditTask={handleEditTask}
               tasks={tasks}
+              onChangeStatus={handleChangeStatus}
             />
           ) : (
             <TaskEmptyContainer>
@@ -124,6 +157,7 @@ export default function Main() {
         visible={isEditTaskModalVisible}
         onClose={() => setIsEditTaskModalVisible(false)}
         task={taskBeingEdit}
+        onSave={handleSaveEdit}
       />
     </Container >
   );

@@ -19,7 +19,7 @@ export const TaskFooter = styled.View`
   align-items: center;
 `;
 
-export const TaskStatus = styled.View`
+export const TaskStatus = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   gap: 8px;
